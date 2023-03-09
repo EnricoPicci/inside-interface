@@ -1,11 +1,16 @@
 // For didactic purposes only.
 // The idea is to prove that an interface value wraps a copy of the concrete value it has been assigned to it by comparing the addresses of the various values involved.
-// It uses the unsafe package. Again, for didactiv purposes only.
+// It uses the unsafe package. Again, for didactic purposes only.
 //
 // In this program we create a value of type MyType and store it in the variable myTypeValue. The value has a field, Name, which is of type string.
 // We define also a variable aVar of type interface{} and we assign the value stored in myTypeValue to aVar.
 // The assignement operation creates a copy of the value of type MyType and it is the copy that is wrapped within the interface{} value.
-// To prove that it is really a copy, we compare the addresses of the fields Name extracted from both the value of MyType and the interface{} value
+// To prove that it is really a copy, we compare the addresses of the value of MyType and the pointer to the value wrpaeed within the interface{} value
+// and we see that they are different.
+// To extract the pointer to the value wrapped by the interface we use the unsafe package and the possibility it gives us to convert an unsafe.Pointer to a
+// pointer of any type.
+//
+// We compare also the addresses of the fields Name extracted from both the value of MyType and the interface{} value
 // and we see that they are different.
 // The 2 different string values share the same backing byte array, and we prove this comparing their addresses.
 // We then assign a new string value to the field Name of the value of type MyType stored in the variable myTypeValue.
@@ -51,6 +56,7 @@ func toMyType(unsPtr unsafe.Pointer) MyType {
 }
 
 // estring is a type struct that has the same memory layout as any string value
+// it is used to extract the pointer to the byte array which is the backing array of a string
 type estring struct {
 	ptrToByteArray unsafe.Pointer
 	length         int
